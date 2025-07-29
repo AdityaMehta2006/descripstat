@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Foundations of Statistics: Data & Presentation</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- KaTeX for LaTeX Math Rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" xintegrity="sha384-n8MVd4RsNIU0KOVEMQNogPSesLpvJxifG/T8LC5e82CE0CYfownAIMPxlVdFsVdk" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" xintegrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmUb0ZY0l8" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" xintegrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous"></script>
+
+    <style>
+        /* General Styling - Base (Dark Mode) */
+        :root {
+            --bg-color: #121212;
+            --card-bg-color: #1e1e1e;
+            --text-color: #e0e0e0;
+            --header-color: #ffffff;
+            --subtext-color: #a0a0a0;
+            --border-color: #333;
+            --accent-color: #4db6ac;
+            --table-head-bg: #2a2a2a;
+            --table-cell-bg: #242424;
+            --graph-bg: #2a2a2a;
+            --graph-border: #555;
+            --box-bg: rgba(255, 255, 255, 0.05);
+            --bar-color: #4db6ac;
+            --bar-border: #88d1c9;
+            --bar-text: #121212;
+            --polygon-line: #ffb74d;
+        }
+
+        body.light-mode {
+            --bg-color: #f8f9fa;
+            --card-bg-color: #ffffff;
+            --text-color: #343a40;
+            --header-color: #2c3e50;
+            --subtext-color: #6c757d;
+            --border-color: #dee2e6;
+            --accent-color: #00796b;
+            --table-head-bg: #e9ecef;
+            --table-cell-bg: #f8f9fa;
+            --graph-bg: #f1f3f5;
+            --graph-border: #ced4da;
+            --box-bg: rgba(0, 0, 0, 0.03);
+            --bar-color: #26a69a;
+            --bar-border: #00796b;
+            --bar-text: #ffffff;
+            --polygon-line: #f57c00;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            color: var(--header-color);
+            font-weight: 700;
+        }
+        header p {
+            font-size: 1.2rem;
+            color: var(--subtext-color);
+        }
+
+        /* Theme Switcher */
+        .theme-switcher {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 26px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--accent-color);
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        body.light-mode .slider {
+            background-color: #ccc;
+        }
+
+
+        /* Section Card Styling */
+        .card {
+            background-color: var(--card-bg-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .card h2 {
+            font-size: 1.8rem;
+            color: var(--header-color);
+            border-bottom: 2px solid var(--accent-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .card h3 {
+            font-size: 1.3rem;
+            color: var(--header-color);
+            margin-top: 25px;
+        }
+
+        /* Definition and Example Boxes */
+        .definition, .example-box, .proof-box, .exam-question {
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+            border-left: 5px solid;
+            background-color: var(--box-bg);
+        }
+        .definition { border-color: #4db6ac; }
+        .example-box { border-color: #ffb74d; }
+        .proof-box { border-color: #9575cd; }
+        .exam-question { border-color: #66bb6a; }
+        .exam-question h3, .proof-box h3 { margin-top: 0; color: var(--header-color); }
+        
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: var(--table-head-bg);
+            color: var(--header-color);
+        }
+        td { background-color: var(--table-cell-bg); }
+
+        /* Graph Styling */
+        .graph-container {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background-color: var(--graph-bg);
+            border-left: 1px solid var(--graph-border);
+            border-bottom: 1px solid var(--graph-border);
+            margin-top: 30px;
+            box-sizing: border-box;
+        }
+        .histogram-bars {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            align-items: flex-end;
+            justify-content: space-around;
+            padding: 0 10px;
+        }
+        .bar {
+            background-color: var(--bar-color);
+            width: 18%;
+            border: 1px solid var(--bar-border);
+            box-sizing: border-box;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--bar-text);
+        }
+        .bar-label {
+            position: absolute;
+            bottom: -30px;
+            width: 100%;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--subtext-color);
+        }
+        .y-axis-label, .x-axis-label { color: var(--subtext-color); }
+        .y-axis-label { position: absolute; left: -50px; top: 50%; transform: rotate(-90deg) translateY(-50%); }
+        .x-axis-label { position: absolute; bottom: -50px; left: 50%; transform: translateX(-50%); }
+        .graph-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .polygon-line { stroke: var(--polygon-line); }
+        .polygon-dot { fill: var(--polygon-line); }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 0 10px; }
+            header h1 { font-size: 2rem; }
+            .card h2 { font-size: 1.5rem; }
+            .theme-switcher { top: 10px; right: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="theme-switcher">
+                <label class="theme-switch">
+                    <input type="checkbox" id="theme-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <h1>Foundations of Statistics</h1>
+            <p>Understanding Data, Presentation, and Central Tendency</p>
+        </header>
+
+        <main>
+            <!-- Types of Data Section -->
+            <section class="card">
+                <h2>1. Types of Data</h2>
+                <div class="definition">
+                    <h3>Primary vs. Secondary Data</h3>
+                    <ul>
+                        <li><strong>Primary Data:</strong> Data collected firsthand by the researcher for a specific purpose (e.g., surveys, experiments).</li>
+                        <li><strong>Secondary Data:</strong> Data that has already been collected by someone else (e.g., government census data, company records).</li>
+                    </ul>
+                    <h3>Quantitative vs. Qualitative Data</h3>
+                    <ul>
+                        <li><strong>Quantitative Data:</strong> Numerical data that can be measured (e.g., height, temperature, price).</li>
+                        <li><strong>Qualitative Data:</strong> Descriptive, non-numerical data that is observed (e.g., eye color, car brands).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Levels of Measurement Section -->
+            <section class="card">
+                <h2>2. Levels of Measurement</h2>
+                <div class="definition">
+                    <ul>
+                        <li><strong>Nominal Scale:</strong> Categorical data without any order (e.g., gender, marital status).</li>
+                        <li><strong>Ordinal Scale:</strong> Categorical data with a meaningful order but unequal differences between ranks (e.g., satisfaction ratings: "Good", "Average", "Bad").</li>
+                        <li><strong>Interval Scale:</strong> Ordered data with equal intervals but no true zero (e.g., temperature in Celsius).</li>
+                        <li><strong>Ratio Scale:</strong> Ordered data with equal intervals and a true zero (e.g., height, weight, income).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Discrete and Continuous Data Section -->
+            <section class="card">
+                <h2>3. Discrete and Continuous Data</h2>
+                <div class="definition">
+                    <ul>
+                        <li><strong>Discrete Data:</strong> Data that can only take specific, distinct values (usually counted, e.g., number of students).</li>
+                        <li><strong>Continuous Data:</strong> Data that can take any value within a given range (usually measured, e.g., height).</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Frequency Distribution Section -->
+            <section class="card">
+                <h2>4. Presentation: Frequency Distributions</h2>
+                <p>A frequency distribution is a table that displays the number of times (frequency) each value or group of values (class) occurs in a dataset.</p>
+                <div class="example-box">
+                    <h3>Example: Constructing a Frequency Distribution</h3>
+                    <p>Exam scores of 25 students: <code>82, 93, 67, 75, 88, 79, 61, 99, 85, 72, 64, 77, 81, 90, 71, 83, 95, 68, 74, 86, 92, 66, 78, 89, 75</code></p>
+                    <h3>Steps:</h3>
+                    <ol>
+                        <li><strong>Find Range:</strong> 99 - 61 = 38.</li>
+                        <li><strong>Choose Number of Classes:</strong> Let's use 5.</li>
+                        <li><strong>Calculate Class Width:</strong> 38 / 5 = 7.6. Round up to 8.</li>
+                        <li><strong>Create Intervals & Tally Frequencies.</strong></li>
+                    </ol>
+                    <h3>Frequency Distribution Table:</h3>
+                    <table>
+                        <thead><tr><th>Class Interval</th><th>Frequency (f)</th></tr></thead>
+                        <tbody>
+                            <tr><td>61 - 68</td><td>4</td></tr>
+                            <tr><td>69 - 76</td><td>6</td></tr>
+                            <tr><td>77 - 84</td><td>6</td></tr>
+                            <tr><td>85 - 92</td><td>6</td></tr>
+                            <tr><td>93 - 100</td><td>3</td></tr>
+                            <tr><td><strong>Total</strong></td><td><strong>25</strong></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Graphical Representation Section -->
+            <section class="card">
+                <h2>5. Graphical Representation</h2>
+                <h3>A. Histogram & B. Frequency Polygon</h3>
+                <p>A histogram uses adjacent bars to show frequency, while a frequency polygon is a line graph connecting the midpoints of these bars.</p>
+                <div class="graph-container">
+                    <div class="y-axis-label">Frequency</div>
+                    <div class="histogram-bars">
+                        <div class="bar" style="height: 40%;"><span class="bar-value">4</span><div class="bar-label">61-68</div></div>
+                        <div class="bar" style="height: 60%;"><span class="bar-value">6</span><div class="bar-label">69-76</div></div>
+                        <div class="bar" style="height: 60%;"><span class="bar-value">6</span><div class="bar-label">77-84</div></div>
+                        <div class="bar" style="height: 60%;"><span class="bar-value">6</span><div class="bar-label">85-92</div></div>
+                        <div class="bar" style="height: 30%;"><span class="bar-value">3</span><div class="bar-label">93-100</div></div>
+                    </div>
+                    <svg class="graph-svg" viewbox="0 0 100 100" preserveAspectRatio="none">
+                        <polyline class="polygon-line" points="0,100 10,60 30,40 50,40 70,40 90,70 100,100" fill="none" stroke-width="0.7"/>
+                        <circle class="polygon-dot" cx="10" cy="60" r="1" /><circle class="polygon-dot" cx="30" cy="40" r="1" />
+                        <circle class="polygon-dot" cx="50" cy="40" r="1" /><circle class="polygon-dot" cx="70" cy="40" r="1" />
+                        <circle class="polygon-dot" cx="90" cy="70" r="1" />
+                    </svg>
+                    <div class="x-axis-label">Exam Scores</div>
+                </div>
+            </section>
+            
+            <!-- Cumulative Frequency Section -->
+            <section class="card">
+                <h2>6. Cumulative Frequency Distributions</h2>
+                <p>Shows the running total of frequencies.</p>
+                <div class="definition">
+                    <ul>
+                        <li><strong>"Less Than" Method:</strong> Sum of frequencies of all classes up to the current class's upper boundary.</li>
+                        <li><strong>"Or More" Method:</strong> Sum of frequencies of the current class and all subsequent classes.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Measures of Central Tendency -->
+            <section class="card">
+                <h2>7. Measures of Central Tendency</h2>
+                <div class="definition">
+                    <p>A <strong>measure of central tendency</strong> is a single, summary value that attempts to describe the center of a distribution for a dataset. It provides a concise representation of the "typical" value in the set.</p>
+                </div>
+                
+                <h3>Arithmetic Mean ($\bar{x}$)</h3>
+                <p>The arithmetic mean (or simply "mean") is the sum of all values divided by the number of values. It is the most common measure of central tendency but is sensitive to outliers.</p>
+                <div class="definition">
+                    <p><strong>Formula (Ungrouped Data):</strong> $\bar{x} = \frac{\sum x_i}{n}$</p>
+                    <p><strong>Formula (Grouped Data):</strong> $\bar{x} = \frac{\sum f_i x_i}{\sum f_i}$</p>
+                    <p>Where $x_i$ are the individual values (or midpoints for grouped data), $f_i$ is the frequency, and $n$ is the total number of observations.</p>
+                </div>
+                <div class="definition">
+                    <h3>Key Properties of the Arithmetic Mean</h3>
+                    <ul>
+                        <li><strong>Sum of Deviations is Zero:</strong> The sum of the differences of each value from the mean is always zero. This shows the mean is the "center of gravity" of the data.
+                        <p>$\sum (x_i - \bar{x}) = 0$</p></li>
+                        <li><strong>Sum of Squared Deviations is Minimum:</strong> The sum of the squared differences of each value from the mean is smaller than the sum of squared differences from any other number. This property is fundamental to the concept of variance and the method of least squares in regression.
+                        <p>$\sum (x_i - \bar{x})^2$ is a minimum.</p></li>
+                    </ul>
+                </div>
+                <div class="proof-box">
+                    <h3>Proofs of Key Properties</h3>
+                    <p><strong>1. Proof that $\sum (x_i - \bar{x}) = 0$:</strong></p>
+                    <p>$\sum (x_i - \bar{x}) = \sum x_i - \sum \bar{x}$</p>
+                    <p>Since $\bar{x}$ is a constant for the summation, $\sum \bar{x} = n\bar{x}$.</p>
+                    <p>So, $\sum x_i - n\bar{x}$. By definition, $\bar{x} = \frac{\sum x_i}{n}$, which means $n\bar{x} = \sum x_i$.</p>
+                    <p>Therefore, $\sum x_i - \sum x_i = 0$.</p>
+                    <p><strong>2. Proof that $\sum (x_i - A)^2$ is minimum when $A = \bar{x}$:</strong></p>
+                    <p>Let $S = \sum (x_i - A)^2$ be the sum of squared deviations from an arbitrary constant $A$. To find the value of $A$ that minimizes $S$, we take the derivative with respect to $A$ and set it to 0.</p>
+                    <p>$\frac{dS}{dA} = \sum 2(x_i - A)(-1) = -2 \sum (x_i - A)$</p>
+                    <p>Set $\frac{dS}{dA} = 0 \implies -2 \sum (x_i - A) = 0 \implies \sum (x_i - A) = 0$.</p>
+                    <p>$\sum x_i - \sum A = 0 \implies \sum x_i - nA = 0 \implies nA = \sum x_i$.</p>
+                    <p>$A = \frac{\sum x_i}{n} = \bar{x}$.</p>
+                    <p>The second derivative, $\frac{d^2S}{dA^2} = 2n$, is positive, confirming it is a minimum.</p>
+                </div>
+                <div class="exam-question">
+                    <h3>Problem 1 (Finding a Missing Frequency)</h3>
+                    <p>The mean of the following distribution is 18. Find the missing frequency, $p$.</p>
+                    <table><thead><tr><th>Class</th><th>Midpoint (x)</th><th>Frequency (f)</th><th>f * x</th></tr></thead>
+                    <tbody>
+                        <tr><td>11-13</td><td>12</td><td>7</td><td>84</td></tr>
+                        <tr><td>13-15</td><td>14</td><td>6</td><td>84</td></tr>
+                        <tr><td>15-17</td><td>16</td><td>9</td><td>144</td></tr>
+                        <tr><td>17-19</td><td>18</td><td>13</td><td>234</td></tr>
+                        <tr><td>19-21</td><td>20</td><td>p</td><td>20p</td></tr>
+                        <tr><td>21-23</td><td>22</td><td>5</td><td>110</td></tr>
+                        <tr><td>23-25</td><td>24</td><td>4</td><td>96</td></tr>
+                        <tr><td><strong>Total</strong></td><td></td><td><strong>44+p</strong></td><td><strong>752+20p</strong></td></tr>
+                    </tbody></table>
+                    <p><strong>Solution:</strong> We know $\bar{x} = \frac{\sum fx}{\sum f}$.</p>
+                    <p>$18 = \frac{752 + 20p}{44 + p}$</p>
+                    <p>$18(44 + p) = 752 + 20p$</p>
+                    <p>$792 + 18p = 752 + 20p$</p>
+                    <p>$40 = 2p \implies p = 20$. The missing frequency is 20.</p>
+                </div>
+
+                <h3>Median ($M_d$)</h3>
+                <p>The median is the middle value in an ordered dataset. It divides the data into two equal halves. It is robust to outliers.</p>
+                <div class="definition">
+                    <p><strong>Procedure (Ungrouped Data):</strong> First, order the data. The median is the value at the $(\frac{n+1}{2})^{th}$ position.</p>
+                    <p><strong>Formula (Grouped Data):</strong> $M_d = L + \left( \frac{\frac{N}{2} - cf}{f} \right) \times w$</p>
+                    <p>Where $L$ is the lower boundary of the median class, $N$ is the total frequency, $cf$ is the cumulative frequency of the class *before* the median class, $f$ is the frequency of the median class, and $w$ is the class width.</p>
+                </div>
+                 <div class="exam-question">
+                    <h3>Problem 1 (Finding Missing Frequencies)</h3>
+                    <p>The median of the following distribution is 35, and the sum of frequencies is 170. Find the missing frequencies, $f_1$ and $f_2$.</p>
+                    <table><thead><tr><th>Class</th><th>Frequency (f)</th><th>Cumulative Freq. (cf)</th></tr></thead>
+                    <tbody>
+                        <tr><td>10-20</td><td>10</td><td>10</td></tr>
+                        <tr><td>20-30</td><td>$f_1$</td><td>$10+f_1$</td></tr>
+                        <tr><td>30-40</td><td>$f_2$</td><td>$10+f_1+f_2$</td></tr>
+                        <tr><td>40-50</td><td>40</td><td>$50+f_1+f_2$</td></tr>
+                        <tr><td>50-60</td><td>25</td><td>$75+f_1+f_2$</td></tr>
+                        <tr><td><strong>Total</strong></td><td><strong>170</strong></td><td></td></tr>
+                    </tbody></table>
+                    <p><strong>Solution:</strong>
+                    1. From the total frequency: $10 + f_1 + f_2 + 40 + 25 = 170 \implies 75 + f_1 + f_2 = 170 \implies f_1 + f_2 = 95$ (Eq. 1).
+                    2. The median is 35, so the median class is <strong>30-40</strong>.
+                    3. Identify values for the formula: $L=30$, $N=170$, $cf=10+f_1$, $f=f_2$, $w=10$.
+                    4. Apply the formula: $35 = 30 + (\frac{170/2 - (10+f_1)}{f_2}) \times 10$
+                    <p>$5 = (\frac{85 - 10 - f_1}{f_2}) \times 10 \implies 5f_2 = (75 - f_1) \times 10 \implies 5f_2 = 750 - 10f_1 \implies 10f_1 + 5f_2 = 750 \implies 2f_1 + f_2 = 150$ (Eq. 2).</p>
+                    5. Solve the system of equations: Subtract Eq. 1 from Eq. 2: $(2f_1 + f_2) - (f_1 + f_2) = 150 - 95 \implies f_1 = 55$.
+                    6. Substitute $f_1$ into Eq. 1: $55 + f_2 = 95 \implies f_2 = 40$.
+                    The missing frequencies are 55 and 40.</p>
+                </div>
+
+                <h3>Mode ($M_o$)</h3>
+                <p>The mode is the most frequently occurring value in a dataset.</p>
+                <div class="definition">
+                    <p><strong>Procedure (Ungrouped Data):</strong> Find the value that appears most often.</p>
+                    <p><strong>Formula (Grouped Data):</strong> $M_o = L + \left( \frac{f_1 - f_0}{2f_1 - f_0 - f_2} \right) \times w$</p>
+                    <p>Where $L$ is the lower boundary of the modal class, $f_1$ is the frequency of the modal class, $f_0$ is the frequency of the preceding class, $f_2$ is the frequency of the succeeding class, and $w$ is the class width.</p>
+                </div>
+                <div class="exam-question">
+                    <h3>Problem 1 (Finding Missing Frequency)</h3>
+                    <p>The mode of the following distribution is 67. Find the missing frequency, $x$.</p>
+                    <table><thead><tr><th>Class</th><th>Frequency (f)</th></tr></thead>
+                    <tbody>
+                        <tr><td>40-50</td><td>5</td></tr>
+                        <tr><td>50-60</td><td>x</td></tr>
+                        <tr><td>60-70</td><td>15</td></tr>
+                        <tr><td>70-80</td><td>12</td></tr>
+                        <tr><td>80-90</td><td>7</td></tr>
+                    </tbody></table>
+                    <p><strong>Solution:</strong>
+                    1. The mode is 67, so the modal class is <strong>60-70</strong>.
+                    2. Identify values: $L=60$, $f_1=15$, $f_0=x$, $f_2=12$, $w=10$.
+                    3. Apply the formula: $67 = 60 + (\frac{15 - x}{2(15) - x - 12}) \times 10$
+                    <p>$7 = (\frac{15 - x}{30 - 12 - x}) \times 10 \implies 7 = \frac{150 - 10x}{18 - x}$</p>
+                    <p>$7(18 - x) = 150 - 10x \implies 126 - 7x = 150 - 10x \implies 3x = 24 \implies x = 8$.</p>
+                    The missing frequency is 8.</p>
+                </div>
+
+                <h3>Empirical Relationship Between Mean, Median, and Mode</h3>
+                <div class="definition">
+                    <p>For a moderately skewed (asymmetrical) distribution, there is an approximate relationship between the three main measures of central tendency:</p>
+                    <p><strong>Mode $\approx$ 3(Median) - 2(Mean)</strong></p>
+                    <p>This relationship is useful for estimating one measure if the other two are known, but it is an approximation and does not hold for perfectly symmetrical or highly skewed distributions.</p>
+                </div>
+                 <div class="exam-question">
+                    <h3>Problem 1 (Using the Empirical Formula)</h3>
+                    <p>In a moderately skewed distribution, the median is 28 and the mean is 30. Estimate the mode.</p>
+                    <p><strong>Solution:</strong> Using the formula Mode = 3(Median) - 2(Mean):</p>
+                    <p>Mode = $3(28) - 2(30) = 84 - 60 = 24$.</p>
+                    <p>The estimated mode is 24.</p>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Function to set the theme
+        function setTheme(isLight) {
+            if (isLight) {
+                body.classList.add('light-mode');
+                themeToggle.checked = true;
+            } else {
+                body.classList.remove('light-mode');
+                themeToggle.checked = false;
+            }
+        }
+
+        // Check for saved theme in localStorage and set it on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setTheme(savedTheme === 'light');
+        } else {
+            // Default to dark mode if no theme is saved
+            setTheme(false);
+        }
+
+        // Add event listener for the toggle
+        themeToggle.addEventListener('change', () => {
+            const isLight = themeToggle.checked;
+            setTheme(isLight);
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+        
+        // Initial KaTeX render
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: '$$', right: '$$', display: true},
+                    {left: '$', right: '$', display: false}
+                ],
+                throwOnError : false
+            });
+        });
+    </script>
+
+</body>
+</html>
